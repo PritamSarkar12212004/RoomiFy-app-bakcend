@@ -6,19 +6,22 @@ const RoomListController = async (req, res) => {
       path: "owner",
       select: "username profilePicture  exact_location",
     })
-    .select(" mainImage createdAt _id");
+    .sort({ createdAt: 1 })
+    .select(" mainImage createdAt _id comments likes");
   res.send(roomData);
 };
 
 const viewRoomController = async (req, res) => {
   const id = req.body;
   const mainid = Object.keys(id);
-  const roomData = await roomModel.findById(mainid).populate({
-    path: "owner",
-    select:
-      "username profilePicture  exact_location.city exact_location.state exact_location.village exact_location.state_district ",
-  });
-  console.log(roomData);
+  const roomData = await roomModel
+    .findById(mainid)
+    .populate({
+      path: "owner",
+      select:
+        "username profilePicture  exact_location.city exact_location.state exact_location.village exact_location.state_district ",
+    })
+    .sort({ createdAt: 1 });
   if (!roomData) {
     return res.status(404).send("Room Not Found");
   }

@@ -105,24 +105,25 @@ const roomSchema = new mongoose.Schema(
       type: Number,
     },
 
-    reviews: [
+    comments: [
       {
         user: {
           type: mongoose.Schema.Types.ObjectId,
           ref: "User",
         },
-        rating: {
-          type: Number,
-          min: 1,
-          max: 5,
+        commentsItem: {
+          type: String,
         },
-        comment: String,
         createdAt: {
           type: Date,
           default: Date.now,
         },
       },
     ],
+    likes: {
+      type: Array,
+    },
+
     createdAt: {
       type: Date,
       default: Date.now,
