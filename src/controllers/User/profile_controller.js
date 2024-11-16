@@ -1,6 +1,7 @@
 import userModel from "../../models/User/user.model.js";
 import cloudinary from "cloudinary";
 import fs from "fs"; // Import fs to delete the local file
+import sharp from "sharp";
 
 const profileChekerController = async (req, res) => {
   const data = await req.body;
@@ -34,14 +35,23 @@ const profileChekerController = async (req, res) => {
 
 const profileUpdater = async (req, res) => {
   const { file } = req; // multer will attach the file to req.file
-
+  console.log(file);
   if (!file) {
     return res.status(400).send("No file uploaded");
   }
 
   try {
+    // Compress the image using Sharp before uploading
+    const compressedImagePath = `uploads-${Date.now()}.jpg`; // Temporary path for the compressed image
+    // Compress the image using Sharp (resize to a smaller size, e.g., 500px max width)
+    await sharp(file.path)
+      .resize(500) // Resize the image to a max width of 500px
+      .toFormat("jpeg") // Convert to JPEG format (you can adjust this based on your needs)
+      .jpeg({ quality: 80 }) // Set JPEG quality to 80 (you can adjust this for compression)
+      .toFile(compressedImagePath); // Save the compr essed image
+
     // Upload the image to Cloudinary
-    const result = await cloudinary.v2.uploader.upload(file.path, {
+    const result = await cloudinary.v2.uploader.upload(compressedImagePath, {
       folder: "profile_images", // Optional: Define a folder name in Cloudinary
     });
 
@@ -49,7 +59,14 @@ const profileUpdater = async (req, res) => {
     const profileImageUrl = result.secure_url; // URL of the uploaded image
 
     // Delete the local file from the server (the one uploaded by multer)
-    fs.unlink(file.path, (err) => {
+    fs.unlink(req.file.path, (err) => {
+      if (err) {
+        console.error("Error deleting local file:", err);
+      } else {
+        console.log("Local file deleted successfully.");
+      }
+    });
+    fs.unlink(compressedImagePath, (err) => {
       if (err) {
         console.error("Error deleting local file:", err);
       } else {

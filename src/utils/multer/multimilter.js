@@ -15,7 +15,6 @@ const storage = multer.diskStorage({
 // Create multer instance with storage options
 const upload = multer({
   storage: storage,
-  limits: {  fileSize: 52428800 * 10 }, // Limit the file size to 5MB
 }).fields([
   { name: "mainImage", maxCount: 1 }, // For main image
   { name: "childImages", maxCount: 6 }, // For child images (max 6)
