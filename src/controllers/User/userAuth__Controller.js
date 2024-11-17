@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 const useSingUpController = async (req, res) => {
   try {
     const data = await req.body;
-    const findData = await userModel.findOne({ email: data.email });
+    const findData = await userModel.findOne({ phone: data.phone });
     if (findData) {
       const errorData = {
         status: "error",
@@ -36,7 +36,7 @@ const useSingUpController = async (req, res) => {
           await userModel.create({
             username: data.username,
             password: data.password,
-            email: data.email,
+            phone: data.phone,
             location: data.location,
             exact_location: exact_location,
             gender: data.gender,
@@ -65,9 +65,9 @@ const useSingUpController = async (req, res) => {
 };
 
 const useLoginController = async (req, res) => {
-  const { email, password } = await req.body;
+  const { phone, password } = await req.body;
   try {
-    const findData = await userModel.findOne({ email: email });
+    const findData = await userModel.findOne({ phone: phone });
     if (!findData) {
       const errorData = {
         status: "error",

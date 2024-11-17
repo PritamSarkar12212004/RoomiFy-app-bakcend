@@ -16,11 +16,10 @@ const userSchema = new Schema({
     max: 40,
     require: true,
   },
-  email: {
-    type: String,
+  phone: {
+    type: Number,
     required: true,
     unique: true,
-    trim: true,
   },
 
   location: {
