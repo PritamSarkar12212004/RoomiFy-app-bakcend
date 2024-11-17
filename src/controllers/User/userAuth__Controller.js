@@ -5,6 +5,7 @@ const useSingUpController = async (req, res) => {
   try {
     const data = await req.body;
     const findData = await userModel.findOne({ phone: data.phone });
+    console.log(findData);
     if (findData) {
       const errorData = {
         status: "error",

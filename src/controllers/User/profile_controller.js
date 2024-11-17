@@ -12,7 +12,7 @@ const profileChekerController = async (req, res) => {
       .then((data) => {
         const info = {
           name: data.username,
-          email: data.email,
+          phone: data.phone,
           state: data.exact_location.state,
           city: data.exact_location.city,
           village: data.exact_location.village,
@@ -81,7 +81,7 @@ const profileUpdater = async (req, res) => {
         req.body.id,
         {
           username: req.body.name,
-          email: req.body.email,
+          phone: req.body.phone,
           location: req.bodylocation,
           profilePicture: profileImageUrl,
         },
