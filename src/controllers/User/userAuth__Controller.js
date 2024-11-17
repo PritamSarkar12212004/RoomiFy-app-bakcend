@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 const useSingUpController = async (req, res) => {
   try {
     const data = await req.body;
+    console.log(data)
     const findData = await userModel.findOne({ phone: parseInt(data.phone) });
     if (findData) {
       const errorData = {
@@ -66,6 +67,7 @@ const useSingUpController = async (req, res) => {
 
 const useLoginController = async (req, res) => {
   const { phone, password } = await req.body;
+  console.log(phone, password )
   try {
     const findData = await userModel.findOne({ phone:parseInt(phone) });
     if (!findData) {
