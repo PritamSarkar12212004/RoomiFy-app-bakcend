@@ -1,6 +1,6 @@
 import userModel from "../../models/User/user.model.js";
 import cloudinary from "cloudinary";
-import fs from "fs"; // Import fs to delete the local file
+// import fs from "fs"; // Import fs to delete the local file
 import sharp from "sharp";
 
 const profileChekerController = async (req, res) => {
@@ -59,20 +59,6 @@ const profileUpdater = async (req, res) => {
     const profileImageUrl = result.secure_url; // URL of the uploaded image
 
     // Delete the local file from the server (the one uploaded by multer)
-    fs.unlink(req.file.path, (err) => {
-      if (err) {
-        console.error("Error deleting local file:", err);
-      } else {
-        console.log("Local file deleted successfully.");
-      }
-    });
-    fs.unlink(compressedImagePath, (err) => {
-      if (err) {
-        console.error("Error deleting local file:", err);
-      } else {
-        console.log("Local file deleted successfully.");
-      }
-    });
 
     // Respond with the Cloudinary image URL
 

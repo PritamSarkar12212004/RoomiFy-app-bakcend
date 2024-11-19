@@ -1,5 +1,5 @@
 import cloudinary from "cloudinary";
-import fs from "fs";
+// import fs from "fs";
 import sharp from "sharp";
 import roomModel from "../../models/Product/Room/room_model.js";
 
@@ -52,12 +52,12 @@ const UploadProduct = async (req, res) => {
     };
 
     // Delete local images after uploading to Cloudinary
-    try {
-      fs.unlinkSync(mainImage[0].path); // Delete the main image
-      childImages.forEach((file) => fs.unlinkSync(file.path)); // Delete child images
-    } catch (err) {
-      console.error("Error deleting local files:", err);
-    }
+    // try {
+    //   fs.unlinkSync(mainImage[0].path); // Delete the main image
+    //   childImages.forEach((file) => fs.unlinkSync(file.path)); // Delete child images
+    // } catch (err) {
+    //   console.error("Error deleting local files:", err);
+    // }
 
     // Create a new room document
     const roomData = new roomModel({
