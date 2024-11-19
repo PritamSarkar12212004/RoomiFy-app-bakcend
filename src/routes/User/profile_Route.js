@@ -1,5 +1,4 @@
 import express from "express";
-import upload from "../../utils/multer/multer.js"; // Assuming multer setup
 
 import {
   profileChekerController,
@@ -9,6 +8,6 @@ import {
 const router = express.Router();
 
 router.post("/profile", profileChekerController);
-router.post("/profile/update", upload.single("image"), profileUpdater); // Make sure 'image' matches the form field name
+router.post("/profile/update", profileUpdater); // Make sure 'image' matches the form field name
 
 export default router;
