@@ -7,7 +7,7 @@ import ProfileRoute from "./src/routes/User/profile_Route.js";
 import uploadProductRoute from "./src/routes/Product/upload_Prodyuct.js";
 import RommProductList from "./src/routes/Product/RoomPeroduct_list.js";
 import roomActions from "./src/routes/Product/RoomActions.js";
-
+import SearchRoute from "./src/routes/Univarsal/SearchAuth.js";
 const app = express();
 
 app.use(cors());
@@ -19,6 +19,7 @@ app.use("/user", ProfileRoute);
 app.use("/upload", uploadProductRoute);
 app.use("/list", RommProductList);
 app.use("/room", roomActions);
+app.use("/univarsal", SearchRoute);
 app.post("*", (req, res) => {
   res.status(404).json({
     message: "Page not found",

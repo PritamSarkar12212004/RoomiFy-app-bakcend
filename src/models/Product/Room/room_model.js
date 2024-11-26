@@ -38,9 +38,30 @@ const roomSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    postTitle: {
+      type: String,
+      required: true,
+    },
     price: {
       type: Number,
       required: true,
+    },
+    postCondition: {
+      type: Boolean,
+      default: true,
+    },
+    location: {
+      type: { type: String, default: "Point" }, // "Point" as the GeoJSON type
+      coordinates: { type: [Number], required: true }, // [longitude, latitude]
+      country: String,
+      country_code: String,
+      state: String,
+      state_district: String,
+      city: String,
+      postcode: String,
+      formatted: String,
+      address_line1: String,
+      address_line2: String,
     },
 
     facility: {
@@ -133,6 +154,7 @@ const roomSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+roomSchema.index({ location: "2dsphere" });
 
 const Room = mongoose.model("Room", roomSchema);
 export default Room;

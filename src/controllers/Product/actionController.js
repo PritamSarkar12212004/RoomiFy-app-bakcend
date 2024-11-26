@@ -11,7 +11,6 @@ const ActionCommentController = async (req, res) => {
         },
       })
       .then((data) => {
-        console.log(data);
         res.status(200).json({
           message: "success",
         });
@@ -56,5 +55,24 @@ const ActionLikeController = async (req, res) => {
     console.log(error);
   }
 };
+const postControllerAdd = async (req, res) => {
+  await roomModel
+    .findByIdAndUpdate(req.body.id, { postCondition: false })
+    .then((data) => {
+      res.send(data);
+    });
+};
+const postControllerRemove = async (req, res) => {
+  await roomModel
+    .findByIdAndUpdate(req.body.id, { postCondition: true })
+    .then((data) => {
+      res.send(data);
+    });
+};
 
-export { ActionCommentController, ActionLikeController };
+export {
+  ActionCommentController,
+  ActionLikeController,
+  postControllerAdd,
+  postControllerRemove,
+};
