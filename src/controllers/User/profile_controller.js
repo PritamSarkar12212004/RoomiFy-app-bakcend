@@ -32,19 +32,8 @@ const profileChekerController = async (req, res) => {
 
 const profileUpdater = async (req, res) => {
   try {
-    // Check if a user with the provided phone number already exists
-    const existingUser = await userModel.findOne({ phone: req.body.phone });
-
-    if (existingUser) {
-      console.log("userExist");
-      return res.status(400).send("User already exists");
-    }
-
     // Update the user's profile using their ID
     const updatedUser = await userModel.findByIdAndUpdate(req.body.id, {
-      username: req.body.name,
-      phone: req.body.phone,
-      location: req.body.location,
       profilePicture: req.body.profileImageUrl,
     });
     return res.status(200).send(updatedUser);
@@ -53,5 +42,38 @@ const profileUpdater = async (req, res) => {
     return res.status(500).send("An error occurred while updating the profile");
   }
 };
+const nameUpdater = async (req, res) => {
+  try {
+    const updatedUser = await userModel
+      .findByIdAndUpdate(req.body.id, {
+        username: req.body.name,
+      })
+      .then((response) => {
+        res.state(200).send(response);
+      })
+      .catch((error) => {
+        res.status(500).send(error);
+      });
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-export { profileChekerController, profileUpdater };
+const numberUpdater = async (req, res) => {
+  const existingUser = await userModel.findOne({ phone: req.body.phone });
+  try {
+    if (existingUser) {
+      console.log("userExist");
+      return res.status(400).send("User already exists");
+    }
+    const updatedUser = await userModel.findByIdAndUpdate(req.body.id, {
+      phone: req.body.phone,
+    });
+    return res.status(200).send(updatedUser);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+export { profileChekerController, profileUpdater, nameUpdater, numberUpdater };
