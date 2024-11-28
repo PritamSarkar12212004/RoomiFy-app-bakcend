@@ -1,5 +1,6 @@
 import userModel from "../../models/User/user.model.js";
 import roomModel from "../../models/Product/Room/room_model.js";
+import axios from "axios";
 
 const profileChekerController = async (req, res) => {
   const data = await req.body;
@@ -74,6 +75,50 @@ const numberUpdater = async (req, res) => {
     console.log(error);
   }
 };
+const locationUpdater = async (req, res) => {
+  const { location, id } = req.body;
+  const longitude = location.coords.longitude;
+  const latitude = location.coords.latitude;
+  const locationApi = `https://api.geoapify.com/v1/geocode/reverse?lat=${latitude}&lon=${longitude}&apiKey=${process.env.MAP_API_KEY}`;
+  var config = {
+    method: "get",
+    url: locationApi,
+    headers: {},
+  };
 
+  axios(config)
+    .then(function (response) {
+      const exact_location = response.data.features[0].properties;
+      dataSaver(exact_location);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  const dataSaver = async (exact_location) => {
+    await userModel
+      .findByIdAndUpdate(id, {
+        exact_location: exact_location,
+      })
+      .then((resss) => {
+        const data = {
+          status: "success",
+          message: "User Created Successfully",
+          token: resss._id,
+        };
+        res.send(data);
+      })
 
-export { profileChekerController, profileUpdater, nameUpdater, numberUpdater };
+      .catch((err) => {
+        console.log(err);
+        res.send(Error);
+      });
+  };
+};
+
+export {
+  profileChekerController,
+  profileUpdater,
+  nameUpdater,
+  numberUpdater,
+  locationUpdater,
+};
